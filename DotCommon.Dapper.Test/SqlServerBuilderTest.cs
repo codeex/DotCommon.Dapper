@@ -60,7 +60,7 @@ namespace DotCommon.Dapper.Test
             var properties = GetProperties(TestObject);
             string sql = _sqlBuilder.BuildInsert(_tableName, properties);
             string expectSql =
-                "INSERT INTO Table1 (Id,Name,Mobile) VALUES (@Id,@Name,@Mobile) SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
+                "INSERT INTO Table1 ([Id],[Name],[Mobile]) VALUES (@Id,@Name,@Mobile) SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -69,7 +69,7 @@ namespace DotCommon.Dapper.Test
         {
             var properties = GetProperties(TestObject);
             string sql = _sqlBuilder.BuildInsertEffact(_tableName, properties).TrimEnd();
-            string expectSql = "INSERT INTO Table1 (Id,Name,Mobile) VALUES (@Id,@Name,@Mobile)";
+            string expectSql = "INSERT INTO Table1 ([Id],[Name],[Mobile]) VALUES (@Id,@Name,@Mobile)";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -79,7 +79,7 @@ namespace DotCommon.Dapper.Test
             var updateProperties = GetProperties(new { Mobile = "123456" });
             var whereProperties = GetProperties(new { Id = 1 });
             string sql = _sqlBuilder.BuildUpdate(_tableName, updateProperties, whereProperties);
-            string expectSql = "UPDATE Table1 SET Mobile = @Mobile WHERE Id = @w_Id";
+            string expectSql = "UPDATE Table1 SET [Mobile] = @Mobile WHERE [Id] = @w_Id";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -88,7 +88,7 @@ namespace DotCommon.Dapper.Test
         {
             var whereProperties = GetProperties(new { Id = 1 });
             string sql = _sqlBuilder.BuildDelete(_tableName, whereProperties);
-            string expectSql = "DELETE FROM Table1 WHERE Id = @Id";
+            string expectSql = "DELETE FROM Table1 WHERE [Id] = @Id";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -97,7 +97,7 @@ namespace DotCommon.Dapper.Test
         {
             var properties = GetProperties(new { Id = 1 });
             string sql = _sqlBuilder.BuildCount(_tableName, properties);
-            string expectSql = "SELECT COUNT(*) FROM Table1 WHERE Id = @Id";
+            string expectSql = "SELECT COUNT(*) FROM Table1 WHERE [Id] = @Id";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -106,7 +106,7 @@ namespace DotCommon.Dapper.Test
         {
             var properties = GetProperties(new { Id = 1, Name = "cc" });
             string sql = _sqlBuilder.BuildQuerySql(_tableName, properties);
-            string expectSql = "SELECT * FROM Table1 WHERE Id = @Id AND Name = @Name";
+            string expectSql = "SELECT * FROM Table1 WHERE [Id] = @Id AND [Name] = @Name";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 
@@ -115,7 +115,7 @@ namespace DotCommon.Dapper.Test
         {
             var properties = GetProperties(new { Id = 1, Name = "cc" });
             string sql = _sqlBuilder.BuildQueryPaged(_tableName, properties, "Id", 2, 5);
-            string expectSql = "SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNumber, * FROM Table1 WHERE Id = @Id AND Name = @Name) AS Total WHERE RowNumber >= 6 AND RowNumber <= 10";
+            string expectSql = "SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNumber, * FROM Table1 WHERE [Id] = @Id AND [Name] = @Name) AS Total WHERE RowNumber >= 6 AND RowNumber <= 10";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
     }
