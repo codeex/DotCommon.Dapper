@@ -34,9 +34,9 @@ namespace DotCommon.Dapper.FluentMap
             }
         }
 
-        public static void Register(Expression<Func<IEntityMap>> expression)
+        public static void Register(Func<IEntityMap> func)
         {
-            var entityMap = expression.Compile()();
+            var entityMap = func.Invoke();
             EntityMaps.TryAdd(entityMap.GetEntityType(), entityMap);
         }
 

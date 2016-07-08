@@ -24,9 +24,7 @@ namespace DotCommon.Dapper.Expressions
         /// </summary>
         private string BuildSelect()
         {
-            var selectSection = Sections.FirstOrDefault(x => x.GetType() == typeof (SelectSection));
-            Ensure.NotNull(selectSection, "SelectSection");
-            var lambda = selectSection?.Expressions.FirstOrDefault() as LambdaExpression;
+            var lambda = GetSelectExpression();
             var sb = new StringBuilder();
             sb.AppendFormat("SELECT  ");
             return "";

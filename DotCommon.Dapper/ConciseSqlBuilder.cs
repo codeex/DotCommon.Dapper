@@ -94,7 +94,7 @@ namespace DotCommon.Dapper
                 whereFields = " WHERE " + string.Join(separator, properties.Select(p => $"[{p}]" + " = @" + p));
             }
             return
-                $"SELECT {columns} FROM (SELECT ROW_NUMBER() OVER (ORDER BY {orderBy}) AS RowNumber, {columns} FROM {table}{whereFields}) AS Total WHERE RowNumber >= {(pageIndex - 1) * pageSize + 1} AND RowNumber <= {pageIndex * pageSize}";
+                $"SELECT {columns} FROM (SELECT ROW_NUMBER() OVER (ORDER BY {orderBy}) AS RowNumber, {columns} FROM {table}{whereFields}) AS Total WHERE RowNumber >= {(pageIndex - 1)*pageSize + 1} AND RowNumber <= {pageIndex*pageSize}";
         }
     }
 
