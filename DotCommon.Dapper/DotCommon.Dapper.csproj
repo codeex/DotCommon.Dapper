@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.0\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.1\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -57,6 +57,7 @@
     <Compile Include="Expressions\Sections\JoinSection.cs" />
     <Compile Include="Expressions\Sections\OrderBySection.cs" />
     <Compile Include="Expressions\Sections\PageSection.cs" />
+    <Compile Include="Expressions\Sections\SectionItem.cs" />
     <Compile Include="Expressions\Sections\SectionParameter.cs" />
     <Compile Include="Expressions\Sections\SelectSection.cs" />
     <Compile Include="Expressions\Sections\TopSection.cs" />

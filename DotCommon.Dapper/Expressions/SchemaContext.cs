@@ -46,20 +46,12 @@ namespace DotCommon.Dapper.Expressions
             Sections = sections;
         }
 
-        protected void AttachExpression<TSection>(Expression expression)
-            where TSection : BaseSection, new()
-        {
-            var section = Sections.FirstOrDefault(x => x.GetType() == typeof (TSection)) ?? new TSection();
-            section.AttachExpression(expression);
-        }
-
-        protected void AttachParam<TSection>(ISectionParameter sectionParameter)
-            where TSection : BaseSection, new()
-        {
-            var section = Sections.FirstOrDefault(x => x.GetType() == typeof (TSection)) ?? new TSection();
-            section.AttachParam(sectionParameter);
-        }
-
+	    protected void AddItem<TSection>(SectionItem item)
+		    where TSection : BaseSection, new()
+	    {
+		    var section = Sections.FirstOrDefault(x => x.GetType() == typeof (TSection)) ?? new TSection();
+		    section.AddItem(item);
+	    }
     }
 
     public class SchemaContext<T1>:BaseSchemaContext
@@ -70,58 +62,58 @@ namespace DotCommon.Dapper.Expressions
 
         }
 
-        public SchemaContext<T1, T2> InnerJoin<T2>(Expression<Func<T1, T2, bool>> expression)
-            where T2 : class
-        {
-            AttachExpression<JoinSection>(expression);
-            return new SchemaContext<T1, T2>(this);
-        }
+	    public SchemaContext<T1, T2> InnerJoin<T2>(Expression<Func<T1, T2, bool>> expression)
+		    where T2 : class
+	    {
+		    AddItem<JoinSection>(new SectionItem(expression));
+		    return new SchemaContext<T1, T2>(this);
+	    }
 
-        public SchemaContext<T1> Union<TUnion>(Expression<Func<TUnion, bool>> expression)
-        {
-            AttachExpression<UnionSection>(expression);
-            return this;
-        }
+	    public SchemaContext<T1> Union<TUnion>(Expression<Func<TUnion, bool>> expression)
+	    {
+		    AddItem<UnionSection>(new SectionItem(expression));
+		    return this;
+	    }
 
-        public SchemaContext<T1> Where(Expression<Func<T1, bool>> expression)
+	    public SchemaContext<T1> Where(Expression<Func<T1, bool>> expression)
         {
-            AttachExpression<WhereSection>(expression);
-            return this;
+			AddItem<WhereSection>(new SectionItem(expression));
+			return this;
         }
 
         public SchemaContext<T1> GroupBy(Expression<Func<T1, object>> expression)
         {
-            AttachExpression<GroupBySection>(expression);
-            return this;
+			AddItem<GroupBySection>(new SectionItem(expression));
+			return this;
         }
 
         public SchemaContext<T1> Having(Expression<Func<T1, bool>> expression)
         {
-            AttachExpression<HavingSection>(expression);
-            return this;
+			AddItem<HavingSection>(new SectionItem(expression));
+			return this;
         }
 
         public SchemaContext<T1> OrderBy<TKey>(Expression<Func<T1, TKey>> expression, bool isAsc = true)
         {
-            AttachExpression<OrderBySection>(expression);
-            return this;
+			AddItem<OrderBySection>(new SectionItem(expression));
+			return this;
         }
 
 
 
-        public SchemaContext<T1> Top(int top)
-        {
-            AttachParam<TopSection>(new TopSectionParameter(top));
-            return this;
-        }
+	    public SchemaContext<T1> Top(int top)
+	    {
+		    AddItem<TopSection>(new SectionItem(sectionParameter: new TopSectionParameter(top)));
+		    return this;
+	    }
 
-        public SchemaContext<T1> Page(int pageCount, int pageIndex)
-        {
-            AttachParam<TopSection>(new PageSectionParameter(pageCount, pageIndex));
-            return this;
-        }
+	    public SchemaContext<T1> Page(int pageCount, int pageIndex)
+	    {
+		    AddItem<TopSection>(new SectionItem(sectionParameter: new PageSectionParameter(pageCount, pageIndex)));
+		    return this;
+	    }
 
-        public IEnumerable<T1> Select()
+	    public IEnumerable<T1> Select()
         {
             using (Connection)
             {
@@ -143,44 +135,44 @@ namespace DotCommon.Dapper.Expressions
         public SchemaContext<T1, T2, T3> InnerJoin<T3>(Expression<Func<T1, T2, T3, bool>> expression)
             where T3 : class
         {
-            AttachExpression<JoinSection>(expression);
+			AddItem<JoinSection>(new SectionItem(expression));
             return new SchemaContext<T1, T2, T3>(this);
         }
 
 
 
-        public SchemaContext<T1, T2> Where(Expression<Func<T1, T2, bool>> expression)
-        {
-            AttachExpression<WhereSection>(expression);
-            return this;
-        }
+	    public SchemaContext<T1, T2> Where(Expression<Func<T1, T2, bool>> expression)
+	    {
+		    AddItem<WhereSection>(new SectionItem(expression));
+		    return this;
+	    }
 
-        public SchemaContext<T1, T2> GroupBy(Expression<Func<T1, T2, object>> expression)
-        {
-            AttachExpression<GroupBySection>(expression);
-            return this;
-        }
+	    public SchemaContext<T1, T2> GroupBy(Expression<Func<T1, T2, object>> expression)
+	    {
+		    AddItem<GroupBySection>(new SectionItem(expression));
+		    return this;
+	    }
 
-        public SchemaContext<T1, T2> Having(Expression<Func<T1, T2, bool>> expression)
-        {
-            AttachExpression<HavingSection>(expression);
-            return this;
-        }
+	    public SchemaContext<T1, T2> Having(Expression<Func<T1, T2, bool>> expression)
+	    {
+		    AddItem<HavingSection>(new SectionItem(expression));
+		    return this;
+	    }
 
 
-        public SchemaContext<T1, T2> OrderBy<TKey>(Expression<Func<T1, T2, TKey>> expression, bool isAsc = true)
-        {
-            AttachExpression<OrderBySection>(expression);
-            return this;
-        }
+	    public SchemaContext<T1, T2> OrderBy<TKey>(Expression<Func<T1, T2, TKey>> expression, bool isAsc = true)
+	    {
+		    AddItem<OrderBySection>(new SectionItem(expression));
+		    return this;
+	    }
 
-        public SchemaContext<T1, T2> Top(int top)
-        {
-            AttachParam<TopSection>(new TopSectionParameter(top));
-            return this;
-        }
+	    public SchemaContext<T1, T2> Top(int top)
+	    {
+		    AddItem<OrderBySection>(new SectionItem(sectionParameter: new TopSectionParameter(top)));
+		    return this;
+	    }
 
-        public SchemaContext<T1, T2> Page(int pageCount, int pageIndex)
+	    public SchemaContext<T1, T2> Page(int pageCount, int pageIndex)
         {
             return this;
         }
@@ -204,42 +196,39 @@ namespace DotCommon.Dapper.Expressions
 
         public SchemaContext<T1, T2, T3> Where(Expression<Func<T1, T2, T3, bool>> expression)
         {
-            AttachExpression<WhereSection>(expression);
-            return this;
+			AddItem<WhereSection>(new SectionItem(expression));
+			return this;
         }
 
         public SchemaContext<T1, T2, T3> GroupBy(Expression<Func<T1, T2, T3, object>> expression)
         {
-            AttachExpression<GroupBySection>(expression);
-            return this;
+			AddItem<GroupBySection>(new SectionItem(expression));
+			return this;
         }
 
-        public SchemaContext<T1, T2, T3> Having(Expression<Func<T1, T2, T3, bool>> expression)
+	    public SchemaContext<T1, T2, T3> Having(Expression<Func<T1, T2, T3, bool>> expression)
+	    {
+		    AddItem<HavingSection>(new SectionItem(expression));
+		    return this;
+	    }
+
+
+	    public SchemaContext<T1, T2, T3> OrderBy<TKey>(Expression<Func<T1, T2, T3, TKey>> expression, bool isAsc = true)
+	    {
+		    AddItem<OrderBySection>(new SectionItem(expression));
+		    return this;
+	    }
+
+	    public SchemaContext<T1, T2, T3> Top(int top)
         {
-            AttachExpression<HavingSection>(expression);
-            return this;
-        }
-
-
-        public SchemaContext<T1, T2, T3> OrderBy<TKey>(Expression<Func<T1, T2, T3, TKey>> expression, bool isAsc = true)
-        {
-            AttachExpression<OrderBySection>(expression);
-            return this;
-        }
-
-
-
-
-        public SchemaContext<T1, T2, T3> Top(int top)
-        {
-            AttachParam<TopSection>(new TopSectionParameter(top));
-            return this;
+			AddItem<TopSection>(new SectionItem(sectionParameter:new TopSectionParameter(top)));
+			return this;
         }
 
         public SchemaContext<T1, T2, T3> Page(int pageCount, int pageIndex)
         {
-            AttachParam<PageSection>(new PageSectionParameter(pageCount,pageIndex));
-            return this;
+			AddItem<PageSection>(new SectionItem(sectionParameter: new PageSectionParameter(pageCount, pageIndex)));
+			return this;
         }
 
         public IEnumerable<T> Select<T>(Expression<Func<T1, T2, T3, T>> expression) 
