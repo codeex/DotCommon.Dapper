@@ -59,7 +59,7 @@ namespace DotCommon.Dapper.Test
             var properties = GetProperties(TestObject);
             string sql = _sqlBuilder.BuildInsert(_tableName, properties);
             string expectSql =
-                "INSERT INTO Table1 (`Id`,`Name`,`Mobile`) VALUES (@Id,@Name,@Mobile) SELECT LAST_INSERT_ID()";
+                "INSERT INTO Table1 (`Id`,`Name`,`Mobile`) VALUES (@Id,@Name,@Mobile); SELECT LAST_INSERT_ID()";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
 

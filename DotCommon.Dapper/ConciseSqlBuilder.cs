@@ -105,7 +105,7 @@ namespace DotCommon.Dapper
         {
             var columns = string.Join(",", properties.Select(x=>$"`{x}`"));
             var values = string.Join(",", properties.Select(p => "@" + p));
-            return $"INSERT INTO {table} ({columns}) VALUES ({values}) SELECT LAST_INSERT_ID()";
+            return $"INSERT INTO {table} ({columns}) VALUES ({values}) ;SELECT LAST_INSERT_ID()";
         }
 
         public string BuildInsertEffact(string table, List<string> properties)
