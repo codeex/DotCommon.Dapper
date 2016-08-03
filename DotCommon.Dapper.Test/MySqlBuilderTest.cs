@@ -114,7 +114,7 @@ namespace DotCommon.Dapper.Test
         {
             var properties = GetProperties(new { Id = 1, Name = "cc" });
             string sql = _sqlBuilder.BuildQueryPaged(_tableName, properties, "Id", 2, 5);
-            string expectSql = "SELECT * FROM Table1  WHERE `Id` = @Id AND `Name` = @Name LIMIT 6,5";
+            string expectSql = "SELECT * FROM Table1  WHERE `Id` = @Id AND `Name` = @Name LIMIT 5,5";
             Assert.Equal(expectSql.Trim(), sql.Trim());
         }
     }

@@ -105,7 +105,7 @@ namespace DotCommon.Dapper
         {
             var columns = string.Join(",", properties.Select(x=>$"`{x}`"));
             var values = string.Join(",", properties.Select(p => "@" + p));
-            return $"INSERT INTO {table} ({columns}) VALUES ({values}) ;SELECT LAST_INSERT_ID()";
+            return $"INSERT INTO {table} ({columns}) VALUES ({values}); SELECT LAST_INSERT_ID()";
         }
 
         public string BuildInsertEffact(string table, List<string> properties)
@@ -168,7 +168,7 @@ namespace DotCommon.Dapper
                 var separator = isOr ? " OR " : " AND ";
                 whereFields = " WHERE " + string.Join(separator, properties.Select(p => $"`{p}`" + " = @" + p));
             }
-            return $"SELECT {columns} FROM {table} {whereFields} LIMIT {((pageIndex - 1)*pageSize + 1)},{pageSize}";
+            return $"SELECT {columns} FROM {table} {whereFields} LIMIT {(pageIndex - 1)*pageSize},{pageSize}";
         }
     }
 }
