@@ -223,8 +223,8 @@ namespace DotCommon.Dapper
             string orderBy, int pageIndex, int pageSize, string columns = "*", bool isOr = false,
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            pageSize = pageSize < 0 ? 0 : pageSize;
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            pageSize = pageSize < 1 ? 1 : pageSize;
             return QueryPaged<dynamic>(connection, condition, table, orderBy, pageIndex, pageSize, columns, isOr,
                 transaction, commandTimeout);
         }
@@ -236,8 +236,8 @@ namespace DotCommon.Dapper
             string table, string orderBy, int pageIndex, int pageSize, string columns = "*", bool isOr = false,
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            pageSize = pageSize < 0 ? 0 : pageSize;
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            pageSize = pageSize < 1 ? 1 : pageSize;
             return QueryPagedAsync<dynamic>(connection, condition, table, orderBy, pageIndex, pageSize, columns, isOr,
                 transaction, commandTimeout);
         }
@@ -249,6 +249,8 @@ namespace DotCommon.Dapper
             string orderBy, int pageIndex, int pageSize, string columns = "*", bool isOr = false,
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            pageSize = pageSize < 1 ? 1 : pageSize;
             var conditionObj = condition as object;
             var properties = GetProperties(conditionObj);
             var builder = connection.GetConciseSqlBuilder();
@@ -262,6 +264,8 @@ namespace DotCommon.Dapper
             string table, string orderBy, int pageIndex, int pageSize, string columns = "*", bool isOr = false,
             IDbTransaction transaction = null, int? commandTimeout = null)
         {
+            pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            pageSize = pageSize < 1 ? 1 : pageSize;
             var conditionObj = condition as object;
             var properties = GetProperties(conditionObj);
             var builder = connection.GetConciseSqlBuilder();
