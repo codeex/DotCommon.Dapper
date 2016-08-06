@@ -4,7 +4,7 @@ namespace DotCommon.Dapper.Expressions.Sections
 {
 	public abstract class BaseSection
 	{
-		public List<SectionItem> Items { get; private set; }=new List<SectionItem>();
+	    public List<SectionItem> Items { get; } = new List<SectionItem>();
 
 		protected BaseSection()
 		{

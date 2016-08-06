@@ -17,24 +17,24 @@ namespace DotCommon.Dapper.Expressions
 
 	    protected Expression GetSelectExpression()
 	    {
-		    var selectSection = Sections.FirstOrDefault(x => x.GetType() == typeof (SelectSection));
+		    var selectSection = Sections.SingleOrDefault(x => x.GetType() == typeof (SelectSection));
 		    Ensure.NotNull(selectSection, "SelectSection");
 		    return selectSection?.Items.FirstOrDefault()?.Expression;
 	    }
 
 	    protected Expression GetWhereExpression()
 	    {
-		    var whereSection = Sections.FirstOrDefault(x => x.GetType() == typeof (WhereSection));
+		    var whereSection = Sections.SingleOrDefault(x => x.GetType() == typeof (WhereSection));
 		    return whereSection?.Items.FirstOrDefault()?.Expression;
 	    }
 
 	    protected Expression GetOrderByExpression()
 	    {
-		    var orderBySection = Sections.FirstOrDefault(x => x.GetType() == typeof (OrderBySection));
+		    var orderBySection = Sections.SingleOrDefault(x => x.GetType() == typeof (OrderBySection));
 		    return orderBySection?.Items.FirstOrDefault()?.Expression;
 	    }
 
-	    protected PageSectionParameter GetPageSectionParameter()
+        protected PageSectionParameter GetPageSectionParameter()
         {
             var pageSection = Sections.FirstOrDefault(x => x.GetType() == typeof (PageSection));
             return pageSection?.Items.FirstOrDefault()?.SectionParameter as PageSectionParameter;
@@ -45,6 +45,7 @@ namespace DotCommon.Dapper.Expressions
 		    var topSection = Sections.FirstOrDefault(x => x.GetType() == typeof (TopSection));
 		    return topSection?.Items.FirstOrDefault()?.SectionParameter as TopSectionParameter;
 	    }
+
 
     }
 }

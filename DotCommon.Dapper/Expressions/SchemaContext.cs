@@ -99,8 +99,6 @@ namespace DotCommon.Dapper.Expressions
 			return this;
         }
 
-
-
 	    public SchemaContext<T1> Top(int top)
 	    {
 		    AddItem<TopSection>(new SectionItem(sectionParameter: new TopSectionParameter(top)));

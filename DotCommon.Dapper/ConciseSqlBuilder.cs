@@ -168,7 +168,8 @@ namespace DotCommon.Dapper
                 var separator = isOr ? " OR " : " AND ";
                 whereFields = " WHERE " + string.Join(separator, properties.Select(p => $"`{p}`" + " = @" + p));
             }
-            return $"SELECT {columns} FROM {table} {whereFields} LIMIT {(pageIndex - 1)*pageSize},{pageSize}";
+            return
+                $"SELECT {columns} FROM {table} {whereFields} ORDER BY {orderBy} LIMIT {(pageIndex - 1)*pageSize},{pageSize}";
         }
     }
 }

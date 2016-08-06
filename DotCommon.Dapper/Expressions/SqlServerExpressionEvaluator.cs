@@ -27,6 +27,7 @@ namespace DotCommon.Dapper.Expressions
             var lambda = GetSelectExpression();
             var sb = new StringBuilder();
             sb.AppendFormat("SELECT  ");
+            
             return "";
         }
 
