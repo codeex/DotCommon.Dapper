@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace DotCommon.Dapper.Expressions.Sections
+namespace DotCommon.Dapper.Expressions
 {
 
 	public class SectionItem

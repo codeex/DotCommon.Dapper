@@ -1,4 +1,4 @@
-﻿namespace DotCommon.Dapper.Expressions.Sections
+﻿namespace DotCommon.Dapper.Expressions
 {
     public interface ISectionParameter
     {
