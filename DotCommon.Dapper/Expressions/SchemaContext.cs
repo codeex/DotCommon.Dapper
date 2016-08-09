@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using Dapper;
+using DotCommon.Dapper.Expressions.Sections;
 
 namespace DotCommon.Dapper.Expressions
 {
@@ -27,7 +28,7 @@ namespace DotCommon.Dapper.Expressions
     public class BaseSchemaContext
     {
         public IDbConnection Connection { get; }
-	    public QueryWapper Wapper { get;private set; } 
+	    public IWapper Wapper { get; } 
 
 		public BaseSchemaContext()
         {
@@ -39,10 +40,10 @@ namespace DotCommon.Dapper.Expressions
 			Wapper = new QueryWapper();
 	    }
 
-	    public BaseSchemaContext(IDbConnection connection, QueryWapper queryLambdaExpression)
+	    public BaseSchemaContext(IDbConnection connection, IWapper wapper)
 	    {
 		    Connection = connection;
-		    Wapper = queryLambdaExpression;
+		    Wapper = wapper;
 	    }
     }
 
@@ -54,56 +55,57 @@ namespace DotCommon.Dapper.Expressions
 
         }
 
-	    public SchemaContext<T1, T2> InnerJoin<T2>(Expression<Func<T1, T2, bool>> expression)
-		    where T2 : class
-	    {
-		    Wapper.AttachSectionItem<JoinSection>(new SectionItem(expression));
-		    return new SchemaContext<T1, T2>(this);
-	    }
-
-	    public SchemaContext<T1> Union<TUnion>(Expression<Func<TUnion, bool>> expression)
-	    {
-			Wapper.AttachSectionItem<UnionSection>(new SectionItem(expression));
-		    return this;
-	    }
-
-	    public SchemaContext<T1> Where(Expression<Func<T1, bool>> expression)
+        public SchemaContext<T1, T2> InnerJoin<T2>(Expression<Func<T1, T2, bool>> expression)
+            where T2 : class
         {
-			Wapper.AttachSectionItem<WhereSection>(new SectionItem(expression));
-			return this;
+            Wapper.AttachSectionItem(SectionType.Join, new SectionItem(expression));
+            return new SchemaContext<T1, T2>(this);
+        }
+
+        public SchemaContext<T1> Union<TUnion>(Expression<Func<TUnion, bool>> expression)
+        {
+            Wapper.AttachSectionItem(SectionType.Union, new SectionItem(expression));
+            return this;
+        }
+
+        public SchemaContext<T1> Where(Expression<Func<T1, bool>> expression)
+        {
+            Wapper.AttachSectionItem(SectionType.Where, new SectionItem(expression));
+            return this;
         }
 
         public SchemaContext<T1> GroupBy(Expression<Func<T1, object>> expression)
         {
-			Wapper.AttachSectionItem<GroupBySection>(new SectionItem(expression));
-			return this;
+            Wapper.AttachSectionItem(SectionType.GroupBy, new SectionItem(expression));
+            return this;
         }
 
         public SchemaContext<T1> Having(Expression<Func<T1, bool>> expression)
         {
-			Wapper.AttachSectionItem<HavingSection>(new SectionItem(expression));
-			return this;
+            Wapper.AttachSectionItem(SectionType.Having, new SectionItem(expression));
+            return this;
         }
 
         public SchemaContext<T1> OrderBy<TKey>(Expression<Func<T1, TKey>> expression, bool isAsc = true)
         {
-			Wapper.AttachSectionItem<OrderBySection>(new SectionItem(expression));
-			return this;
+            Wapper.AttachSectionItem(SectionType.OrderBy, new SectionItem(expression));
+            return this;
         }
 
-	    public SchemaContext<T1> Top(int top)
+        public SchemaContext<T1> Top(int top)
 	    {
-			Wapper.AttachSectionItem<TopSection>(new SectionItem(sectionParameter: new TopSectionParameter(top)));
-		    return this;
+            Wapper.AttachSectionItem(SectionType.Top, new SectionItem(sectionParameter: new TopSectionParameter(top)));
+            return this;
 	    }
 
-	    public SchemaContext<T1> Page(int pageCount, int pageIndex)
-	    {
-			Wapper.AttachSectionItem<TopSection>(new SectionItem(sectionParameter: new PageSectionParameter(pageCount, pageIndex)));
-		    return this;
-	    }
+        public SchemaContext<T1> Page(int pageIndex,int pageCount)
+        {
+            Wapper.AttachSectionItem(SectionType.Page,
+                new SectionItem(sectionParameter: new PageSectionParameter(pageIndex,pageCount)));
+            return this;
+        }
 
-	    public IEnumerable<T1> Select()
+        public IEnumerable<T1> Select()
         {
             using (Connection)
             {
@@ -125,7 +127,7 @@ namespace DotCommon.Dapper.Expressions
         public SchemaContext<T1, T2, T3> InnerJoin<T3>(Expression<Func<T1, T2, T3, bool>> expression)
             where T3 : class
         {
-			Wapper.AttachSectionItem<JoinSection>(new SectionItem(expression));
+			Wapper.AttachSectionItem(SectionType.Join, new SectionItem(expression));
             return new SchemaContext<T1, T2, T3>(this);
         }
 
@@ -133,37 +135,40 @@ namespace DotCommon.Dapper.Expressions
 
 	    public SchemaContext<T1, T2> Where(Expression<Func<T1, T2, bool>> expression)
 	    {
-			Wapper.AttachSectionItem<WhereSection>(new SectionItem(expression));
-		    return this;
+            Wapper.AttachSectionItem(SectionType.Where, new SectionItem(expression));
+            return this;
 	    }
 
 	    public SchemaContext<T1, T2> GroupBy(Expression<Func<T1, T2, object>> expression)
 	    {
-			Wapper.AttachSectionItem<GroupBySection>(new SectionItem(expression));
-		    return this;
+            Wapper.AttachSectionItem(SectionType.GroupBy, new SectionItem(expression));
+            return this;
 	    }
 
 	    public SchemaContext<T1, T2> Having(Expression<Func<T1, T2, bool>> expression)
 	    {
-			Wapper.AttachSectionItem<HavingSection>(new SectionItem(expression));
+			Wapper.AttachSectionItem(SectionType.Having, new SectionItem(expression));
 		    return this;
 	    }
 
 
-	    public SchemaContext<T1, T2> OrderBy<TKey>(Expression<Func<T1, T2, TKey>> expression, bool isAsc = true)
-	    {
-			Wapper.AttachSectionItem<OrderBySection>(new SectionItem(expression));
-		    return this;
-	    }
-
-	    public SchemaContext<T1, T2> Top(int top)
-	    {
-			Wapper.AttachSectionItem<OrderBySection>(new SectionItem(sectionParameter: new TopSectionParameter(top)));
-		    return this;
-	    }
-
-	    public SchemaContext<T1, T2> Page(int pageCount, int pageIndex)
+        public SchemaContext<T1, T2> OrderBy<TKey>(Expression<Func<T1, T2, TKey>> expression, bool isAsc = true)
         {
+            Wapper.AttachSectionItem(SectionType.OrderBy, new SectionItem(expression));
+            return this;
+        }
+
+        public SchemaContext<T1, T2> Top(int top)
+        {
+            Wapper.AttachSectionItem(SectionType.OrderBy,
+                new SectionItem(sectionParameter: new TopSectionParameter(top)));
+            return this;
+        }
+
+        public SchemaContext<T1, T2> Page(int pageIndex, int pageCount)
+        {
+            Wapper.AttachSectionItem(SectionType.Page,
+                new SectionItem(sectionParameter: new PageSectionParameter(pageIndex, pageCount)));
             return this;
         }
 
@@ -186,39 +191,40 @@ namespace DotCommon.Dapper.Expressions
 
         public SchemaContext<T1, T2, T3> Where(Expression<Func<T1, T2, T3, bool>> expression)
         {
-			Wapper.AttachSectionItem<WhereSection>(new SectionItem(expression));
+			Wapper.AttachSectionItem(SectionType.Where ,new SectionItem(expression));
 			return this;
         }
 
         public SchemaContext<T1, T2, T3> GroupBy(Expression<Func<T1, T2, T3, object>> expression)
         {
-			Wapper.AttachSectionItem<GroupBySection>(new SectionItem(expression));
-			return this;
+            Wapper.AttachSectionItem(SectionType.GroupBy, new SectionItem(expression));
+            return this;
         }
 
 	    public SchemaContext<T1, T2, T3> Having(Expression<Func<T1, T2, T3, bool>> expression)
 	    {
-			Wapper.AttachSectionItem<HavingSection>(new SectionItem(expression));
-		    return this;
+            Wapper.AttachSectionItem(SectionType.Having, new SectionItem(expression));
+            return this;
 	    }
 
 
 	    public SchemaContext<T1, T2, T3> OrderBy<TKey>(Expression<Func<T1, T2, T3, TKey>> expression, bool isAsc = true)
 	    {
-			Wapper.AttachSectionItem<OrderBySection>(new SectionItem(expression));
-		    return this;
+            Wapper.AttachSectionItem(SectionType.OrderBy, new SectionItem(expression));
+            return this;
 	    }
 
-	    public SchemaContext<T1, T2, T3> Top(int top)
+        public SchemaContext<T1, T2, T3> Top(int top)
         {
-			Wapper.AttachSectionItem<TopSection>(new SectionItem(sectionParameter:new TopSectionParameter(top)));
-			return this;
+            Wapper.AttachSectionItem(SectionType.Top, new SectionItem(sectionParameter: new TopSectionParameter(top)));
+            return this;
         }
 
-        public SchemaContext<T1, T2, T3> Page(int pageCount, int pageIndex)
+        public SchemaContext<T1, T2, T3> Page(int pageIndex, int pageCount)
         {
-			Wapper.AttachSectionItem<PageSection>(new SectionItem(sectionParameter: new PageSectionParameter(pageCount, pageIndex)));
-			return this;
+            Wapper.AttachSectionItem(SectionType.Page,
+                new SectionItem(sectionParameter: new PageSectionParameter(pageIndex, pageCount)));
+            return this;
         }
 
         public IEnumerable<T> Select<T>(Expression<Func<T1, T2, T3, T>> expression) 

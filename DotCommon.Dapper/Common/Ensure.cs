@@ -63,5 +63,6 @@ namespace DotCommon.Dapper.Common
             if (expected != actual)
                 throw new ArgumentException($"{argumentName} expected value: {expected}, actual value: {actual}");
         }
+ 
     }
 }

@@ -44,18 +44,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ConfigSetting.cs" />
+    <Compile Include="Common\DapperConfiguration.cs" />
     <Compile Include="Common\Ensure.cs" />
     <Compile Include="Common\ExpressionUtils.cs" />
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="ConciseSqlBuilder.cs" />
     <Compile Include="Expressions\BaseExpressionEvaluator.cs" />
+    <Compile Include="Expressions\Builder\MySqlBuilder.cs" />
     <Compile Include="Expressions\IExpressionEvaluator.cs" />
+    <Compile Include="Expressions\Builder\ISqlBuilder.cs" />
     <Compile Include="Expressions\MySqlExpressionEvaluator.cs" />
-    <Compile Include="Expressions\QueryWapper.cs" />
     <Compile Include="Expressions\SchemaContext.cs" />
-    <Compile Include="Expressions\Sections.cs" />
-    <Compile Include="Expressions\SectionItem.cs" />
-    <Compile Include="Expressions\SectionParameter.cs" />
+    <Compile Include="Expressions\Sections\ISectionParameter.cs" />
+    <Compile Include="Expressions\Sections\IWapper.cs" />
+    <Compile Include="Expressions\Sections\PageSectionParameter.cs" />
+    <Compile Include="Expressions\Sections\QueryWapper.cs" />
+    <Compile Include="Expressions\Sections\Section.cs" />
+    <Compile Include="Expressions\Builder\SqlBuilderFactory.cs" />
+    <Compile Include="Expressions\Builder\SqlServerBuilder.cs" />
+    <Compile Include="Expressions\Sections\SectionItem.cs" />
+    <Compile Include="Expressions\Sections\SectionType.cs" />
+    <Compile Include="Expressions\Sections\TopSectionParameter.cs" />
     <Compile Include="Expressions\SqlServerExpressionEvaluator.cs" />
     <Compile Include="Extensions\DbConnectionExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -68,6 +78,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
