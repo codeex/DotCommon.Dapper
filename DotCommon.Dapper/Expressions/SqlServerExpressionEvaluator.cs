@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using DotCommon.Dapper.Common;
+using DotCommon.Dapper.Expressions.Builder;
 using DotCommon.Dapper.Expressions.Sections;
 
 namespace DotCommon.Dapper.Expressions
@@ -19,17 +20,14 @@ namespace DotCommon.Dapper.Expressions
         public string EvalQuery(QueryWapper queryWapper)
         {
             Ensure.NotNull(queryWapper, "QueryWapper");
-            var sql = "";
-            if (_sqlDict.TryGetValue(queryWapper.GetHashCode(), out sql))
-            {
-                return sql;
-            }
-            var sqlBuilder = new StringBuilder();
 
-            return sqlBuilder.ToString();
+            var builder = (SqlServerQueryBuilder) SqlBuilderFactory.CreateQueryBuilder(SqlType.SqlServer, queryWapper);
+
+
+            return "";
         }
 
-     
+
 
 
     }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DotCommon.Dapper.Expressions.Sections
 {
-    public class QueryWapper : IWapper
+    public class QueryWapper 
     {
         public List<Section> Sections { get; }
 

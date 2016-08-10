@@ -8,7 +8,9 @@ namespace DotCommon.Dapper.Common
 {
     public class ConfigSetting
     {
-        public int MaxSqlBuilder { get; set; } = 1000;
+        public int MaxSqlServerBuilder { get; set; } = 1000;
+
+        public int MaxMySqlBuilder { get; set; } = 1000;
 
     }
 }

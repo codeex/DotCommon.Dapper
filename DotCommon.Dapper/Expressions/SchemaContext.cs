@@ -28,7 +28,7 @@ namespace DotCommon.Dapper.Expressions
     public class BaseSchemaContext
     {
         public IDbConnection Connection { get; }
-	    public IWapper Wapper { get; } 
+	    public QueryWapper Wapper { get; } 
 
 		public BaseSchemaContext()
         {
@@ -40,11 +40,14 @@ namespace DotCommon.Dapper.Expressions
 			Wapper = new QueryWapper();
 	    }
 
-	    public BaseSchemaContext(IDbConnection connection, IWapper wapper)
+	    public BaseSchemaContext(IDbConnection connection, QueryWapper wapper)
 	    {
 		    Connection = connection;
 		    Wapper = wapper;
 	    }
+
+
+
     }
 
     public class SchemaContext<T1>:BaseSchemaContext
