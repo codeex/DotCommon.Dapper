@@ -47,7 +47,7 @@ namespace DotCommon.Dapper
             var whereFields = string.Empty;
             if (whereProperties.Any())
             {
-                whereFields = " WHERE " + string.Join(" and ", whereProperties.Select(p => $"[{p}]" + " = @w_" + p));
+                whereFields = " WHERE " + string.Join(" AND ", whereProperties.Select(p => $"[{p}]" + " = @w_" + p));
             }
             return $"UPDATE {table} SET {updateFields}{whereFields}";
         }

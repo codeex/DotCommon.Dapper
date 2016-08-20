@@ -112,6 +112,7 @@ namespace DotCommon.Dapper.Expressions
         {
             using (Connection)
             {
+                Expression<Func<T1>> exp = () => default(T1);
                 return Connection.Query<T1>("", new {});
             }
         }

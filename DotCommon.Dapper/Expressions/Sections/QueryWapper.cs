@@ -17,10 +17,11 @@ namespace DotCommon.Dapper.Expressions.Sections
 
         /// <summary>Find section
         /// </summary>
-        private Section FindSection(SectionType sectionType)
+        internal Section FindSection(SectionType sectionType)
         {
             return Sections?.FirstOrDefault(x => x.SectionType == sectionType);
         }
+
         /// <summary>Create section
         /// </summary>
         private Section CreateSection(SectionType sectionType, SectionItem sectionItem)
