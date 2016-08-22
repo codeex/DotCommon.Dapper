@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using DotCommon.Dapper.Common;
+using System.Reflection;
 using DotCommon.Dapper.Expressions.Sections;
 using DotCommon.Dapper.FluentMap;
 
@@ -14,16 +13,7 @@ namespace DotCommon.Dapper.Expressions.Builder
 
         public QueryWapper QueryWapper { get; protected set; }
 
-        /// <summary>类型别名关联
-        /// </summary>
-        private Dictionary<Type, string> _typeAliasDict;
-
-        /// <summary>类型表明关联
-        /// </summary>
-        private Dictionary<Type, string> _typeTableDict;
-
- 
-
+        protected Dictionary<Type, string> TypeAliasDict = new Dictionary<Type, string>();
 
         protected BaseQueryBuilder(SqlType sqlType, QueryWapper queryWapper)
         {
@@ -36,65 +26,41 @@ namespace DotCommon.Dapper.Expressions.Builder
             return QueryWapper.FindSection(sectionType);
         }
 
-        /// <summary>获取Select中的全部类型
+        /// <summary>获取属性映射的数据库字段的名称
         /// </summary>
-        protected List<Type> GetSelectTypes()
+        protected string GetMapName(MemberInfo memberInfo)
         {
-            var expr = FindSection(SectionType.Select).Items.FirstOrDefault()?.Expression;
-            return ExpressionUtils.GetParameterTypes((LambdaExpression) expr);
+            var entityMap = FluentMapConfiguration.GetMap(memberInfo.DeclaringType);
+            var propertyMap = entityMap?.PropertyMaps.FirstOrDefault(x => x.PropertyInfo.Name == memberInfo.Name);
+            return propertyMap == null ? memberInfo.Name : propertyMap.ColumnName;
         }
 
-
-        /// <summary>获取类型与别名集合
+        /// <summary>根据类型获取表名称
         /// </summary>
-        private Dictionary<Type, string> GetTypeAliasDict()
+        protected string GetTableName(Type type)
         {
-            if (_typeAliasDict != null && _typeAliasDict.Count > 0)
-            {
-                return _typeAliasDict;
-            }
-            _typeAliasDict = new Dictionary<Type, string>();
-            var types = GetSelectTypes();
-            int b = 97;
-            foreach (var type in types)
-            {
-                _typeAliasDict.Add(type, ((char) b).ToString());
-                b++;
-            }
-            return _typeAliasDict;
+            var entityMap = FluentMapConfiguration.GetMap(type);
+            return entityMap == null ? type.Name : entityMap.TableName;
         }
 
-        /// <summary>获取类型的别名
+        /// <summary>获取类型映射表的别名
         /// </summary>
         protected string GetTypeAlias(Type type)
         {
-            if (_typeAliasDict == null || _typeAliasDict.Count == 0)
-            {
-                GetTypeAliasDict();
-            }
-            return _typeAliasDict?.FirstOrDefault(x => x.Key == type).Value;
+            string alias;
+            TypeAliasDict.TryGetValue(type, out alias);
+            return alias;
         }
 
-
-
-        /// <summary>类型表名集合
+        /// <summary>设置类型别名银色
         /// </summary>
-        protected Dictionary<Type, string> GetTypeTable()
+        protected void SetAliasDict(Dictionary<Type, string> aliasDict)
         {
-            if (_typeTableDict != null && _typeTableDict.Count > 0)
+            foreach (var kv in aliasDict)
             {
-                return _typeTableDict;
+                TypeAliasDict.Add(kv.Key, kv.Value);
             }
-            _typeTableDict = new Dictionary<Type, string>();
-            var types = GetSelectTypes();
-            foreach (var type in types)
-            {
-
-            }
-
-            return _typeTableDict;
         }
-
 
     }
 }

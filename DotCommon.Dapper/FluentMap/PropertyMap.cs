@@ -8,7 +8,6 @@ namespace DotCommon.Dapper.FluentMap
         PropertyInfo PropertyInfo { get; }
         bool CaseSensitive { get; }
         bool Ignored { get; }
-
         IPropertyMap Column(string columnName);
         IPropertyMap Ignore();
         IPropertyMap Case();

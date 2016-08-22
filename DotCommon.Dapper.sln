@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotCommon.Dapper", "DotComm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotCommon.Dapper.Test", "DotCommon.Dapper.Test\DotCommon.Dapper.Test.csproj", "{6C1C636E-F34D-4C46-B176-ED39FFE9E68C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotCommon.Dapper.ConsoleTest", "DotCommon.Dapper.ConsoleTest\DotCommon.Dapper.ConsoleTest.csproj", "{3516F04C-49D6-45D7-8FE0-5236199D66E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6C1C636E-F34D-4C46-B176-ED39FFE9E68C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C1C636E-F34D-4C46-B176-ED39FFE9E68C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C1C636E-F34D-4C46-B176-ED39FFE9E68C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3516F04C-49D6-45D7-8FE0-5236199D66E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3516F04C-49D6-45D7-8FE0-5236199D66E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3516F04C-49D6-45D7-8FE0-5236199D66E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3516F04C-49D6-45D7-8FE0-5236199D66E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
