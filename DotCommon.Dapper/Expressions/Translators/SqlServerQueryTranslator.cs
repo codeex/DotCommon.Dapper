@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-namespace DotCommon.Dapper.Expressions.Translators
+﻿namespace DotCommon.Dapper.Expressions.Translators
 {
     public abstract class SqlServerQueryTranslator : SqlServerTranslator
     {

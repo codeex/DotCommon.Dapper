@@ -43,16 +43,16 @@ namespace DotCommon.Dapper.Expressions.Builder
             return entityMap == null ? type.Name : entityMap.TableName;
         }
 
-        /// <summary>获取类型映射表的别名
-        /// </summary>
-        protected string GetTypeAlias(Type type)
-        {
-            string alias;
-            TypeAliasDict.TryGetValue(type, out alias);
-            return alias;
-        }
+	    /// <summary>获取类型对应表名-->表别名
+	    /// </summary>
+	    protected string GetTypeAlias(Type type)
+	    {
+		    var alias = "";
+		    TypeAliasDict.TryGetValue(type, out alias);
+		    return alias;
+	    }
 
-        /// <summary>设置类型别名银色
+	    /// <summary>设置类型对应表名-->表别名 映射
         /// </summary>
         protected void SetAliasDict(Dictionary<Type, string> aliasDict)
         {

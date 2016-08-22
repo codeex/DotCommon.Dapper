@@ -9,7 +9,9 @@ namespace DotCommon.Dapper.Expressions.Translators
 
         public Func<MemberInfo, string> GetMemberMapDelegate { get; private set; }
 
-        public TranslatorDelegate()
+		public Func<Type,string> GetTypeAlias { get; private set; }
+
+		public TranslatorDelegate()
         {
 
         }
@@ -19,5 +21,13 @@ namespace DotCommon.Dapper.Expressions.Translators
             GetTableNameDelegate = getTableNameDelegate;
             GetMemberMapDelegate = getMemberMapDelegate;
         }
+
+	    public TranslatorDelegate(Func<Type, string> getTableNameDelegate, Func<MemberInfo, string> getMemberMapDelegate,
+		    Func<Type, string> getTypeAlias)
+	    {
+		    GetTableNameDelegate = getTableNameDelegate;
+		    GetMemberMapDelegate = getMemberMapDelegate;
+		    GetTypeAlias = getTypeAlias;
+	    }
     }
 }

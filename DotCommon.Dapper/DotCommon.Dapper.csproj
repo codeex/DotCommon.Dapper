@@ -69,8 +69,8 @@
     <Compile Include="Expressions\SqlServerExpressionEvaluator.cs" />
     <Compile Include="Expressions\SqlType.cs" />
     <Compile Include="Expressions\SqlConnectionUtils.cs" />
-    <Compile Include="Expressions\Translators\ColumnRenameContainer.cs" />
     <Compile Include="Expressions\Translators\ITranslator.cs" />
+    <Compile Include="Expressions\Translators\MemberAliasMapContainer.cs" />
     <Compile Include="Expressions\Translators\MySqlQueryTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlSelectTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlTranslator.cs" />

@@ -8,7 +8,7 @@ namespace DotCommon.Dapper.Expressions.Translators
         public MySqlSelectTranslator(TranslatorDelegate translatorDelegate) : base(translatorDelegate)
         {
         }
-        public override string Translate(Expression expr)
+        public override string Translate(LambdaExpression expr)
         {
             Visit(expr);
             return SqlBuilder.ToString();

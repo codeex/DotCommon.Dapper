@@ -7,6 +7,6 @@ namespace DotCommon.Dapper.Expressions.Translators
     {
         protected StringBuilder SqlBuilder { get; set; } = new StringBuilder();
         public SqlType SqlType { get; } = SqlType.MySql;
-        public abstract string Translate(Expression expr);
+        public abstract string Translate(LambdaExpression expr);
     }
 }
