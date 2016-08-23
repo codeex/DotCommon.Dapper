@@ -87,6 +87,7 @@
     <Compile Include="Expressions\Translators\SqlServerPageTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerQueryTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerSelectTranslator.cs" />
+    <Compile Include="Expressions\Translators\SqlServerTopTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerWhereTranslator.cs" />
     <Compile Include="Expressions\Translators\TranslatorDelegate.cs" />
