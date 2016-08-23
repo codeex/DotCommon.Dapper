@@ -20,14 +20,16 @@ namespace DotCommon.Dapper.Expressions.Translators
                 }
             }
             Visit(expr.Body);
-            bool multiple = expr.Parameters.Count > 0;
-            foreach (var item in _mapContainer.MemberAliasMaps)
+			//判断是否为多表操作,如果是多表操作则设置
+			bool multiple = expr.Parameters.Count > 0;
+			TranslatorDelegate.SetMultipleType();
+			foreach (var item in _mapContainer.MemberAliasMaps)
             {
                 if (multiple)
                 {
                     SqlBuilder.Append($"`{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}`.");
                 }
-                SqlBuilder.Append($"`{TranslatorDelegate.GetMemberMapDelegate(item.Member)}] AS [{item.Alias}`,");
+                SqlBuilder.Append($"`{TranslatorDelegate.GetMemberMap(item.Member)}] AS [{item.Alias}`,");
             }
             SqlBuilder.Remove(SqlBuilder.Length - 1, 1);
             return SqlBuilder.ToString();

@@ -35,9 +35,9 @@ namespace DotCommon.Dapper.Expressions.Translators
                 var memberExprL = node.Left as MemberExpression;
                 var typeAlias = TranslatorDelegate.GetTypeAlias(memberExprL.Member.DeclaringType);
                 SqlBuilder.Append(
-                    $" `{TranslatorDelegate.GetTableNameDelegate(memberExprL.Member.DeclaringType)}` {typeAlias}");
+                    $" `{TranslatorDelegate.GetTableName(memberExprL.Member.DeclaringType)}` {typeAlias}");
                 left =
-                    $" `{typeAlias}`.`{TranslatorDelegate.GetMemberMapDelegate(memberExprL.Member)}`";
+                    $" `{typeAlias}`.`{TranslatorDelegate.GetMemberMap(memberExprL.Member)}`";
             }
             SqlBuilder.Append($"{join}");
 
@@ -46,8 +46,8 @@ namespace DotCommon.Dapper.Expressions.Translators
                 var memberExprR = node.Right as MemberExpression;
                 var typeAlias = TranslatorDelegate.GetTypeAlias(memberExprR.Member.DeclaringType);
                 SqlBuilder.Append(
-                    $" `{TranslatorDelegate.GetTableNameDelegate(memberExprR.Member.DeclaringType)}` {typeAlias}");
-                right = $" `{typeAlias}`.`{TranslatorDelegate.GetMemberMapDelegate(memberExprR.Member)}`";
+                    $" `{TranslatorDelegate.GetTableName(memberExprR.Member.DeclaringType)}` {typeAlias}");
+                right = $" `{typeAlias}`.`{TranslatorDelegate.GetMemberMap(memberExprR.Member)}`";
             }
             if (node.NodeType != ExpressionType.Equal)
             {

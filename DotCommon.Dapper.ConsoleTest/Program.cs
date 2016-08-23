@@ -87,8 +87,9 @@ namespace DotCommon.Dapper.ConsoleTest
                 (x, y, z) => x.OrderId==y.ProductId;
             //var translator =
             //    new SqlServerWhereTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias));
+	 
             var translator =
-                new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias),
+                new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias,(x)=> true),
                     new JoinSectionParameter(JoinType.InnerJoin));
 
             var r = translator.Translate(expr);

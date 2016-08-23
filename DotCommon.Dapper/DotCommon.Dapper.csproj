@@ -83,6 +83,7 @@
     <Compile Include="Expressions\Translators\MySqlTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlWhereTranslator.cs" />
     <Compile Include="Expressions\Translators\OneMoreType.cs" />
+    <Compile Include="Expressions\Translators\SqlServerGroupByTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerJoinTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerOrderByTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerPageTranslator.cs" />

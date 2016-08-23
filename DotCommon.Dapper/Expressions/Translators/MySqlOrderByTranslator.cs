@@ -6,7 +6,6 @@ namespace DotCommon.Dapper.Expressions.Translators
     public class MySqlOrderByTranslator:MySqlQueryTranslator
     {
         private OrderBySectionParameter _parameter;
-        private bool _multiple = false;
         public MySqlOrderByTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter) : base(translatorDelegate)
         {
             _parameter = (OrderBySectionParameter)parameter;
@@ -20,12 +19,12 @@ namespace DotCommon.Dapper.Expressions.Translators
         protected override Expression VisitMember(MemberExpression node)
         {
             var asc = _parameter.IsAsc ? "ASC" : "DESC";
-            SqlBuilder.Append(TranslatorDelegate.GetTypeOneMore(OneMoreType.OrderBy) ? $"," : $" ORDER BY");
-            if (_multiple)
-            {
+            SqlBuilder.Append(TranslatorDelegate.IsFirstVisit(SectionType.OrderBy) ? $"," : $" ORDER BY");
+			if (TranslatorDelegate.IsMultipleType())
+			{
                 SqlBuilder.Append($" [{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}].");
             }
-            SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMapDelegate(node.Member)}] {asc}");
+            SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(node.Member)}] {asc}");
             return base.VisitMember(node);
         }
     }
