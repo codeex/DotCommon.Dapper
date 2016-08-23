@@ -27,5 +27,15 @@
             return true;
         }
 
+	    public static bool Avg<TKey>(this object obj, TKey tkey)
+	    {
+		    return true;
+	    }
+
+	    public static bool Sum<TKey>(this object obj, TKey tkey)
+	    {
+		    return true;
+	    }
+
     }
 }

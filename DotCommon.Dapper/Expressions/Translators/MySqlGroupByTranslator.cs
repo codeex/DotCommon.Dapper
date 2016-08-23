@@ -3,15 +3,14 @@ using System.Text;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
-	public class SqlServerGroupByTranslator:SqlServerQueryTranslator
+	public class MySqlGroupByTranslator:MySqlQueryTranslator
 	{
 		private readonly MemberAliasMapContainer _mapContainer;
 		private readonly StringBuilder _groupByBuilder;
-
-		public SqlServerGroupByTranslator(TranslatorDelegate translatorDelegate) : base(translatorDelegate)
+		public MySqlGroupByTranslator(TranslatorDelegate translatorDelegate) : base(translatorDelegate)
 		{
 			_mapContainer = new MemberAliasMapContainer();
-			_groupByBuilder = new StringBuilder();
+			_groupByBuilder =new StringBuilder();
 		}
 
 		public override string Translate(LambdaExpression expr)
@@ -30,15 +29,14 @@ namespace DotCommon.Dapper.Expressions.Translators
 			{
 				if (TranslatorDelegate.IsMultipleType())
 				{
-					_groupByBuilder.Append($"[{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}].");
+					_groupByBuilder.Append($"`{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}`.");
 				}
-				_groupByBuilder.Append($"[{TranslatorDelegate.GetMemberMap(item.Member)}],");
+				_groupByBuilder.Append($"`{TranslatorDelegate.GetMemberMap(item.Member)}`,");
 			}
 			_groupByBuilder.Remove(SqlBuilder.Length - 1, 1);
 			SqlBuilder.Append(_groupByBuilder);
 			return SqlBuilder.ToString();
 		}
-
 		public string GetGroupBySelect()
 		{
 			return _groupByBuilder.ToString();

@@ -74,6 +74,8 @@
     <Compile Include="Expressions\SqlConnectionUtils.cs" />
     <Compile Include="Expressions\Translators\ITranslator.cs" />
     <Compile Include="Expressions\Translators\MemberAliasMapContainer.cs" />
+    <Compile Include="Expressions\Translators\MySqlGroupByTranslator.cs" />
+    <Compile Include="Expressions\Translators\MySqlHavingTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlJoinTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlOrderByTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlPageTranslator.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Expressions\Translators\MySqlWhereTranslator.cs" />
     <Compile Include="Expressions\Translators\OneMoreType.cs" />
     <Compile Include="Expressions\Translators\SqlServerGroupByTranslator.cs" />
+    <Compile Include="Expressions\Translators\SqlServerHavingTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerJoinTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerOrderByTranslator.cs" />
     <Compile Include="Expressions\Translators\SqlServerPageTranslator.cs" />
