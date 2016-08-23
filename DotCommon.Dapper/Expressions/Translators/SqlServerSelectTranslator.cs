@@ -22,13 +22,16 @@ namespace DotCommon.Dapper.Expressions.Translators
 			    }
 		    }
 		    Visit(expr.Body);
-
-		    foreach (var item in _mapContainer.MemberAliasMaps)
-		    {
-			    SqlBuilder.Append($"[{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}].");
-			    SqlBuilder.Append($"[{item.Member.Name}] AS [{item.Alias}],");
-		    }
-		    SqlBuilder.Remove(SqlBuilder.Length - 1, 1);
+	        bool multiple = expr.Parameters.Count > 0;
+            foreach (var item in _mapContainer.MemberAliasMaps)
+	        {
+	            if (multiple)
+	            {
+	                SqlBuilder.Append($"[{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}].");
+	            }
+	            SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMapDelegate(item.Member)}] AS [{item.Alias}],");
+	        }
+	        SqlBuilder.Remove(SqlBuilder.Length - 1, 1);
 		    return SqlBuilder.ToString();
 	    }
 

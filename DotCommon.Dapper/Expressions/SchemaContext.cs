@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
 using Dapper;
 using DotCommon.Dapper.Expressions.Sections;
@@ -61,7 +60,8 @@ namespace DotCommon.Dapper.Expressions
         public SchemaContext<T1, T2> InnerJoin<T2>(Expression<Func<T1, T2, bool>> expression)
             where T2 : class
         {
-            Wapper.AttachSectionItem(SectionType.Join, new SectionItem(expression));
+            Wapper.AttachSectionItem(SectionType.Join,
+                new SectionItem(expression, new JoinSectionParameter(JoinType.InnerJoin)));
             return new SchemaContext<T1, T2>(this);
         }
 
@@ -131,7 +131,8 @@ namespace DotCommon.Dapper.Expressions
         public SchemaContext<T1, T2, T3> InnerJoin<T3>(Expression<Func<T1, T2, T3, bool>> expression)
             where T3 : class
         {
-			Wapper.AttachSectionItem(SectionType.Join, new SectionItem(expression));
+            Wapper.AttachSectionItem(SectionType.Join,
+                new SectionItem(expression, new JoinSectionParameter(JoinType.InnerJoin)));
             return new SchemaContext<T1, T2, T3>(this);
         }
 
@@ -212,11 +213,12 @@ namespace DotCommon.Dapper.Expressions
 	    }
 
 
-	    public SchemaContext<T1, T2, T3> OrderBy<TKey>(Expression<Func<T1, T2, T3, TKey>> expression, bool isAsc = true)
-	    {
-            Wapper.AttachSectionItem(SectionType.OrderBy, new SectionItem(expression));
+        public SchemaContext<T1, T2, T3> OrderBy<TKey>(Expression<Func<T1, T2, T3, TKey>> expression, bool isAsc = true)
+        {
+            Wapper.AttachSectionItem(SectionType.OrderBy,
+                new SectionItem(expression, new OrderBySectionParameter(isAsc)));
             return this;
-	    }
+        }
 
         public SchemaContext<T1, T2, T3> Top(int top)
         {

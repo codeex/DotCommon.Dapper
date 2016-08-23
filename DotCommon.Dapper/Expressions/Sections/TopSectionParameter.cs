@@ -1,6 +1,6 @@
 ﻿namespace DotCommon.Dapper.Expressions.Sections
 {
-    public class TopSectionParameter:ISectionParameter
+    public struct TopSectionParameter : ISectionParameter
     {
         public int Top { get; private set; }
 

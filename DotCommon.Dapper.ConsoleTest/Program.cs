@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using DotCommon.Dapper.Expressions.Builder;
+using DotCommon.Dapper.Expressions.Sections;
 using DotCommon.Dapper.Expressions.Translators;
+using DotCommon.Dapper.Extensions;
 using DotCommon.Dapper.FluentMap;
 
 namespace DotCommon.Dapper.ConsoleTest
@@ -49,34 +51,52 @@ namespace DotCommon.Dapper.ConsoleTest
 				TypeAliasDict.Add(kv.Key, kv.Value);
 			}
 		}
-		static void Main(string[] args)
+
+        static void Main(string[] args)
         {
             SetAliasDict(new Dictionary<Type, string>()
             {
-				{typeof(Order),"a" },
-				{typeof(User),"b" },
-				{typeof(Product),"c" }
+                {typeof (Order), "a"},
+                {typeof (User), "b"},
+                {typeof (Product), "c"}
             });
-			//Expression<Func<Order, User, Product, Other>> expr = (x, y, z) =>
-			// new Other()
-			// {
-			//	 Name = y.UserName,
-			//	 OId = x.OrderId,
-			//	 Code = z.ProductCode
-			// };
+            //Expression<Func<Order, User, Product, Other>> expr = (x, y, z) =>
+            // new Other()
+            // {
+            //	 Name = y.UserName,
+            //	 OId = x.OrderId,
+            //	 Code = z.ProductCode
+            // };
 
-			Expression<Func<Order, User, Product, object>> expr = (x, y, z) => new
-			{
-				OrderId1 = x.OrderId,
-				Name = y.UserName,
-				PName = z.ProductName
-			};
-			var translator = new SqlServerSelectTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias));
-	        var r = translator.Translate(expr);
-			Console.WriteLine(r);
-	        Console.ReadLine();
+            //Expression<Func<Order, User, Product, object>> expr = (x, y, z) => new
+            //{
+            //    OrderId1 = x.OrderId,
+            //    Name = y.UserName,
+            //    PName = z.ProductName
+            //};
+            //var translator = new SqlServerSelectTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias));
+            //var r = translator.Translate(expr);
+
+            //Expression<Func<Order, Product, object>> expr = (x, y) => x.OrderId;
+            //var translator =
+            //    new SqlServerOrderByTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias),
+            //        new OrderBySectionParameter(false));
+            //var r = translator.Translate(expr);
+
+            Expression<Func<Order, Product, User, bool>> expr =
+                (x, y, z) => x.OrderId==y.ProductId;
+            //var translator =
+            //    new SqlServerWhereTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias));
+            var translator =
+                new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias),
+                    new JoinSectionParameter(JoinType.InnerJoin));
+
+            var r = translator.Translate(expr);
+
+            Console.WriteLine(r);
+            Console.ReadLine();
         }
-	}
+    }
 
 	
 

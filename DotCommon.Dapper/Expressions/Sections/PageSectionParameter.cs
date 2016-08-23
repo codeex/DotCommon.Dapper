@@ -1,14 +1,14 @@
 ﻿namespace DotCommon.Dapper.Expressions.Sections
 {
-    public class PageSectionParameter : ISectionParameter
+    public struct PageSectionParameter : ISectionParameter
     {
-        public int PageCount { get; private set; }
+        public int PageSize { get; private set; }
 
         public int PageIndex { get; private set; }
 
-        public PageSectionParameter(int pageIndex, int pageCount)
+        public PageSectionParameter(int pageIndex, int pageSize)
         {
-            PageCount = pageCount;
+            PageSize = pageSize;
             PageIndex = pageIndex;
         }
     }
