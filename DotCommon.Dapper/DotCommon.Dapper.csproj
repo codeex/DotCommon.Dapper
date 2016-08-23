@@ -79,6 +79,7 @@
     <Compile Include="Expressions\Translators\MySqlPageTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlQueryTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlSelectTranslator.cs" />
+    <Compile Include="Expressions\Translators\MySqlTopTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlTranslator.cs" />
     <Compile Include="Expressions\Translators\MySqlWhereTranslator.cs" />
     <Compile Include="Expressions\Translators\OneMoreType.cs" />
