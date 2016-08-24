@@ -5,18 +5,17 @@ namespace DotCommon.Dapper.Expressions.Translators
 {
     public class MySqlPageTranslator:MySqlQueryTranslator
     {
-        private PageSectionParameter _parameter;
         private readonly string _querySql;
-        public MySqlPageTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter,string querySql) : base(translatorDelegate)
+        public MySqlPageTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter,string querySql) : base(translatorDelegate,parameter)
         {
-            _parameter = (PageSectionParameter)parameter;
             _querySql = querySql;
         }
 
         public override string Translate(LambdaExpression expr)
         {
+            var parameter = (PageSectionParameter) Parameter;
             SqlBuilder.Append(
-                $"{_querySql} LIMIT {(_parameter.PageIndex - 1)*_parameter.PageSize},{_parameter.PageSize}");
+                $"{_querySql} LIMIT {(parameter.PageIndex - 1)*parameter.PageSize},{parameter.PageSize}");
             return SqlBuilder.ToString();
         }
     }

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
 using DotCommon.Dapper.Expressions.Sections;
+using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
     public class SqlServerJoinTranslator: SqlServerQueryTranslator
     {
-        private readonly JoinSectionParameter _parameter;
         public SqlServerJoinTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter)
-            : base(translatorDelegate)
+            : base(translatorDelegate,parameter)
         {
-            _parameter = (JoinSectionParameter) parameter;
         }
 
         public override string Translate(LambdaExpression expr)
@@ -21,12 +20,13 @@ namespace DotCommon.Dapper.Expressions.Translators
 
         protected override Expression VisitBinary(BinaryExpression node)
         {
+            var parameter = (JoinSectionParameter) Parameter;
             var join = " INNER JOIN";
-            if (_parameter.JoinType == JoinType.LeftJoin)
+            if (parameter.JoinType == JoinType.LeftJoin)
             {
                 @join = " LEFT JOIN";
             }
-            else if (_parameter.JoinType == JoinType.RightJoin)
+            else if (parameter.JoinType == JoinType.RightJoin)
             {
                 @join = " RIGHT JOIN";
             }
@@ -38,7 +38,7 @@ namespace DotCommon.Dapper.Expressions.Translators
                 SqlBuilder.Append(
                     $" [{TranslatorDelegate.GetTableName(memberExprL.Member.DeclaringType)}] {typeAlias}");
                 left =
-                    $" [{typeAlias}].[{TranslatorDelegate.GetMemberMap(memberExprL.Member)}]";
+                    $" [{typeAlias}].[{TranslatorDelegate.GetPropMap(memberExprL.Member.ToProp())}]";
             }
             SqlBuilder.Append($"{join}");
 
@@ -48,7 +48,7 @@ namespace DotCommon.Dapper.Expressions.Translators
                 var typeAlias = TranslatorDelegate.GetTypeAlias(memberExprR.Member.DeclaringType);
                 SqlBuilder.Append(
                     $" [{TranslatorDelegate.GetTableName(memberExprR.Member.DeclaringType)}] {typeAlias}");
-                right = $" [{typeAlias}].[{TranslatorDelegate.GetMemberMap(memberExprR.Member)}]";
+                right = $" [{typeAlias}].[{TranslatorDelegate.GetPropMap(memberExprR.Member.ToProp())}]";
             }
             if (node.NodeType != ExpressionType.Equal)
             {

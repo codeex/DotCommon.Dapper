@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using DotCommon.Dapper.Expressions.Sections;
 
 namespace DotCommon.Dapper.Expressions.Translators
@@ -8,7 +7,7 @@ namespace DotCommon.Dapper.Expressions.Translators
 	{
 		public Func<Type, string> GetTableName { get; private set; }
 
-		public Func<MemberInfo, string> GetMemberMap { get; private set; }
+		public Func<PropInfo, string> GetPropMap { get; private set; }
 
 		public Func<Type, string> GetTypeAlias { get; private set; }
 
@@ -39,27 +38,27 @@ namespace DotCommon.Dapper.Expressions.Translators
 
 		}
 
-		public TranslatorDelegate(Func<Type, string> getTableName, Func<MemberInfo, string> getMemberMap)
+		public TranslatorDelegate(Func<Type, string> getTableName, Func<PropInfo, string> getPropMap)
 		{
 			GetTableName = getTableName;
-			GetMemberMap = getMemberMap;
+			GetPropMap = getPropMap;
 		}
 
-		public TranslatorDelegate(Func<Type, string> getTableName, Func<MemberInfo, string> getMemberMap,
+		public TranslatorDelegate(Func<Type, string> getTableName, Func<PropInfo, string> getPropMap,
 			Func<Type, string> getTypeAlias, Func<SectionType, bool> sectionIsMultiple)
 		{
 			GetTableName = getTableName;
-			GetMemberMap = getMemberMap;
+			GetPropMap = getPropMap;
 			GetTypeAlias = getTypeAlias;
 			SectionIsMultiple = sectionIsMultiple;
 		}
 
-		public TranslatorDelegate(Func<Type, string> getTableName, Func<MemberInfo, string> getMemberMap,
+		public TranslatorDelegate(Func<Type, string> getTableName, Func<PropInfo, string> getPropMap,
 			Func<Type, string> getTypeAlias, Func<SectionType, bool> sectionIsMultiple, Func<bool> isMultipleType,
 			Action setMultipleType, Func<SectionType, bool> isFirstVisit, Action<SectionType> setVisited)
 		{
 			GetTableName = getTableName;
-			GetMemberMap = getMemberMap;
+			GetPropMap = getPropMap;
 			GetTypeAlias = getTypeAlias;
 			SectionIsMultiple = sectionIsMultiple;
 			IsMultipleType = isMultipleType;
@@ -68,4 +67,6 @@ namespace DotCommon.Dapper.Expressions.Translators
 			SetVisited = setVisited;
 		}
 	}
+
+
 }

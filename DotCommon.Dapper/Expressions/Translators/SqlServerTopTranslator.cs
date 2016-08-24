@@ -5,18 +5,17 @@ namespace DotCommon.Dapper.Expressions.Translators
 {
     public class SqlServerTopTranslator:SqlServerQueryTranslator
     {
-        private TopSectionParameter _parameter;
+
 
         public SqlServerTopTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter)
-            : base(translatorDelegate)
+            : base(translatorDelegate, parameter)
         {
-            _parameter = (TopSectionParameter) parameter;
         }
 
         public override string Translate(LambdaExpression expr)
         {
             Visit(expr.Body);
-            SqlBuilder.Append($" TOP {_parameter.Top}");
+            SqlBuilder.Append($" TOP {((TopSectionParameter) Parameter).Top}");
             return SqlBuilder.ToString();
         }
 

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DotCommon.Dapper.Expressions;
 using DotCommon.Dapper.Expressions.Builder;
 using DotCommon.Dapper.Expressions.Sections;
 using DotCommon.Dapper.Expressions.Translators;
@@ -18,11 +19,11 @@ namespace DotCommon.Dapper.ConsoleTest
 		protected static Dictionary<Type, string> TypeAliasDict = new Dictionary<Type, string>();
 		/// <summary>获取属性映射的数据库字段的名称
 		/// </summary>
-		protected static string GetMapName(MemberInfo memberInfo)
+		protected static string GetMapName(PropInfo propInfo)
 		{
-			var entityMap = FluentMapConfiguration.GetMap(memberInfo.DeclaringType);
-			var propertyMap = entityMap?.PropertyMaps.FirstOrDefault(x => x.PropertyInfo.Name == memberInfo.Name);
-			return propertyMap == null ? memberInfo.Name : propertyMap.ColumnName;
+			var entityMap = FluentMapConfiguration.GetMap(propInfo.Type);
+			var propertyMap = entityMap?.PropertyMaps.FirstOrDefault(x => x.PropertyInfo.Name == propInfo.PropName);
+			return propertyMap == null ? propInfo.PropName : propertyMap.ColumnName;
 		}
 
 		/// <summary>根据类型获取表名称
@@ -83,18 +84,27 @@ namespace DotCommon.Dapper.ConsoleTest
             //        new OrderBySectionParameter(false));
             //var r = translator.Translate(expr);
 
-            Expression<Func<Order, Product, User, bool>> expr =
-                (x, y, z) => x.OrderId==y.ProductId;
+            Expression<Func<Order, Product, User, object>> expr =
+                (x, y, z) => new
+                {
+                    x.OrderId,
+                    Avg1 = z.UserId.SqlAvg(),
+                    y.ProductName,
+                };
+
+            var td = new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias, (x) => true, () => true, () => { },
+                (x) => true, (x) => { });
             //var translator =
             //    new SqlServerWhereTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias));
-	 
-            var translator =
-                new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias,(x)=> true),
-                    new JoinSectionParameter(JoinType.InnerJoin));
 
+            //var translator =
+            //    new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias,(x)=> true),
+            //        new JoinSectionParameter(JoinType.InnerJoin));
+            var translator = new SqlServerGroupByTranslator(td);
             var r = translator.Translate(expr);
-
             Console.WriteLine(r);
+            Console.WriteLine("**************");
+            Console.WriteLine(translator.GetGroupBySelect());
             Console.ReadLine();
         }
     }

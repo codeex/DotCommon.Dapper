@@ -1,16 +1,15 @@
 ﻿using System.Linq.Expressions;
 using DotCommon.Dapper.Expressions.Sections;
+using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
 
     public class SqlServerOrderByTranslator : SqlServerQueryTranslator
     {
-        private OrderBySectionParameter _parameter;
         public SqlServerOrderByTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter)
-            : base(translatorDelegate)
+            : base(translatorDelegate,parameter)
         {
-            _parameter = (OrderBySectionParameter) parameter;
         }
 
         public override string Translate(LambdaExpression expr)
@@ -19,16 +18,16 @@ namespace DotCommon.Dapper.Expressions.Translators
             return SqlBuilder.ToString();
         }
 
-	    protected override Expression VisitMember(MemberExpression node)
-	    {
-		    var asc = _parameter.IsAsc ? "ASC" : "DESC";
-		    SqlBuilder.Append(TranslatorDelegate.IsFirstVisit(SectionType.OrderBy) ? $"," : $" ORDER BY");
-		    if (TranslatorDelegate.IsMultipleType())
-		    {
-			    SqlBuilder.Append($" [{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}].");
-		    }
-		    SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(node.Member)}] {asc}");
-		    return base.VisitMember(node);
-	    }
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            var asc = ((OrderBySectionParameter) Parameter).IsAsc ? "ASC" : "DESC";
+            SqlBuilder.Append(TranslatorDelegate.IsFirstVisit(SectionType.OrderBy) ? $"," : $" ORDER BY");
+            if (TranslatorDelegate.IsMultipleType())
+            {
+                SqlBuilder.Append($" [{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}].");
+            }
+            SqlBuilder.Append($"[{TranslatorDelegate.GetPropMap(node.Member.ToProp())}] {asc}");
+            return base.VisitMember(node);
+        }
     }
 }

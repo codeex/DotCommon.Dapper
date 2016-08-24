@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using DotCommon.Dapper.Expressions.Sections;
 using DotCommon.Dapper.FluentMap;
 
@@ -28,11 +27,11 @@ namespace DotCommon.Dapper.Expressions.Builder
 
         /// <summary>获取属性映射的数据库字段的名称
         /// </summary>
-        protected string GetMapName(MemberInfo memberInfo)
+        protected string GetMapName(PropInfo propInfo)
         {
-            var entityMap = FluentMapConfiguration.GetMap(memberInfo.DeclaringType);
-            var propertyMap = entityMap?.PropertyMaps.FirstOrDefault(x => x.PropertyInfo.Name == memberInfo.Name);
-            return propertyMap == null ? memberInfo.Name : propertyMap.ColumnName;
+            var entityMap = FluentMapConfiguration.GetMap(propInfo.Type);
+            var propertyMap = entityMap?.PropertyMaps.FirstOrDefault(x => x.PropertyInfo.Name == propInfo.PropName);
+            return propertyMap == null ? propInfo.PropName : propertyMap.ColumnName;
         }
 
         /// <summary>根据类型获取表名称

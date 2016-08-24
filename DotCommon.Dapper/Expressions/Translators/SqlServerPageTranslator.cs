@@ -6,15 +6,14 @@ namespace DotCommon.Dapper.Expressions.Translators
 {
     public class SqlServerPageTranslator:SqlServerQueryTranslator
     {
-        private PageSectionParameter _parameter;
+
         private readonly string _orderBySql;
         private readonly string _querySql;
 
         public SqlServerPageTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter,
             string orderBySql, string querySql)
-            : base(translatorDelegate)
+            : base(translatorDelegate,parameter)
         {
-            _parameter = (PageSectionParameter) parameter;
             _orderBySql = orderBySql;
             _querySql = querySql;
         }
@@ -25,8 +24,9 @@ namespace DotCommon.Dapper.Expressions.Translators
             {
                 throw new ArgumentException("Order by is must in SqlServer paging.");
             }
+            var parameter = (PageSectionParameter) Parameter;
             SqlBuilder.Append(
-                $"SELECT * FROM (SELECT ROW_NUMBER() OVER ({_orderBySql}) AS RowNumber, {_querySql}) AS Total WHERE RowNumber >= {(_parameter.PageIndex - 1)*_parameter.PageSize + 1} AND RowNumber <= {_parameter.PageIndex*_parameter.PageSize}");
+                $"SELECT * FROM (SELECT ROW_NUMBER() OVER ({_orderBySql}) AS RowNumber, {_querySql}) AS Total WHERE RowNumber >= {(parameter.PageIndex - 1)*parameter.PageSize + 1} AND RowNumber <= {parameter.PageIndex*parameter.PageSize}");
             return SqlBuilder.ToString();
         }
     }

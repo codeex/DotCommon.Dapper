@@ -5,18 +5,16 @@ namespace DotCommon.Dapper.Expressions.Translators
 {
     public class MySqlTopTranslator:MySqlQueryTranslator
     {
-        private TopSectionParameter _parameter;
-
+ 
         public MySqlTopTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter)
-            : base(translatorDelegate)
+            : base(translatorDelegate, parameter)
         {
-            _parameter = (TopSectionParameter) parameter;
         }
 
         public override string Translate(LambdaExpression expr)
         {
             Visit(expr.Body);
-            SqlBuilder.Append($" LIMIT {_parameter.Top}");
+            SqlBuilder.Append($" LIMIT {((TopSectionParameter) Parameter).Top}");
             return SqlBuilder.ToString();
         }
     }

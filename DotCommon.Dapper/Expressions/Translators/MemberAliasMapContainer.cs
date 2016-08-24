@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
@@ -15,11 +16,17 @@ namespace DotCommon.Dapper.Expressions.Translators
 			MemberAliasMaps.Add(new MemberAliasItem(alias));
 		}
 
-		public void SetMember(MemberInfo memberInfo)
+	    public void SetPropInfo(MemberInfo memberInfo)
+	    {
+	        var propInfo = memberInfo.ToProp();
+	        SetPropInfo(propInfo);
+	    }
+
+	    public void SetPropInfo(PropInfo propInfo)
 		{
 			if (MemberAliasMaps.Count > _memberIndex)
 			{
-				MemberAliasMaps[_memberIndex].SetMember(memberInfo);
+				MemberAliasMaps[_memberIndex].SetPropInfo(propInfo);
 				_memberIndex++;
 			}
 		}
@@ -42,12 +49,14 @@ namespace DotCommon.Dapper.Expressions.Translators
 			Alias = alias;
 		}
 
-		public void SetMember(MemberInfo memberInfo)
+		public void SetPropInfo(PropInfo propInfo)
 		{
-			Member = memberInfo;
+            PropInfo = propInfo;
 		}
 
 		public string Alias { get; private set; }
-		public MemberInfo Member { get; private set; }
+		public PropInfo PropInfo { get; private set; }
+
+        
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
@@ -31,9 +32,9 @@ namespace DotCommon.Dapper.Expressions.Translators
 	        {
 	            if (multiple)
 	            {
-	                SqlBuilder.Append($"[{TranslatorDelegate.GetTypeAlias(item.Member.DeclaringType)}].");
+	                SqlBuilder.Append($"[{TranslatorDelegate.GetTypeAlias(item.PropInfo.Type)}].");
 	            }
-	            SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(item.Member)}] AS [{item.Alias}],");
+	            SqlBuilder.Append($"[{TranslatorDelegate.GetPropMap(item.PropInfo)}] AS [{item.Alias}],");
 	        }
 	        SqlBuilder.Remove(SqlBuilder.Length - 1, 1);
 		    return SqlBuilder.ToString();
@@ -41,7 +42,7 @@ namespace DotCommon.Dapper.Expressions.Translators
 
 	    protected override Expression VisitMember(MemberExpression node)
 	    {
-		    _mapContainer.SetMember(node.Member);
+		    _mapContainer.SetPropInfo(node.Member);
 		    return base.VisitMember(node);
 	    }
 

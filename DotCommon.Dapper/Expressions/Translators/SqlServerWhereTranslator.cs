@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Dapper;
 using DotCommon.Dapper.Expressions.Sections;
+using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {
@@ -88,7 +89,7 @@ namespace DotCommon.Dapper.Expressions.Translators
 	                    {
 		                    SqlBuilder.Append($" [{TranslatorDelegate.GetTypeAlias(memberExpr.Member.DeclaringType)}].");
 	                    }
-	                    SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(memberExpr.Member)}]");
+	                    SqlBuilder.Append($"[{TranslatorDelegate.GetPropMap(memberExpr.Member.ToProp())}]");
                     }
                 }
                 SqlBuilder.Append($" {node.Method.Name.ToUpper()}");
@@ -114,7 +115,7 @@ namespace DotCommon.Dapper.Expressions.Translators
 					{
                         SqlBuilder.Append($" [{TranslatorDelegate.GetTypeAlias(memberExpr.Member.DeclaringType)}].");
                     }
-                    SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(memberExpr.Member)}]");
+                    SqlBuilder.Append($"[{TranslatorDelegate.GetPropMap(memberExpr.Member.ToProp())}]");
                     var paramName = GetParameterName();
                     SqlBuilder.Append($" LIKE {paramName}");
                     if (node.Arguments[1] is ConstantExpression)
@@ -148,7 +149,7 @@ namespace DotCommon.Dapper.Expressions.Translators
                 SqlBuilder.Append(
                     $" [{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}].");
             }
-            SqlBuilder.Append($"[{TranslatorDelegate.GetMemberMap(node.Member)}]");
+            SqlBuilder.Append($"[{TranslatorDelegate.GetPropMap(node.Member.ToProp())}]");
             return base.VisitMember(node);
         }
 
