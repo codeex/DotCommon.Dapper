@@ -84,13 +84,8 @@ namespace DotCommon.Dapper.ConsoleTest
             //        new OrderBySectionParameter(false));
             //var r = translator.Translate(expr);
 
-            Expression<Func<Order, Product, User, object>> expr =
-                (x, y, z) => new
-                {
-                    x.OrderId,
-                    Avg1 = z.UserId.SqlAvg(),
-                    y.ProductName,
-                };
+            Expression<Func<Order, Product, User, bool>> expr =
+                (x, y, z) => x.OrderId > 3 && y.ProductId.SqlCount()>2;
 
             var td = new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias, (x) => true, () => true, () => { },
                 (x) => true, (x) => { });
@@ -100,11 +95,11 @@ namespace DotCommon.Dapper.ConsoleTest
             //var translator =
             //    new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias,(x)=> true),
             //        new JoinSectionParameter(JoinType.InnerJoin));
-            var translator = new SqlServerGroupByTranslator(td);
+            var translator = new SqlServerHavingTranslator(td);
             var r = translator.Translate(expr);
             Console.WriteLine(r);
-            Console.WriteLine("**************");
-            Console.WriteLine(translator.GetGroupBySelect());
+            //Console.WriteLine("**************");
+           // Console.WriteLine(translator.GetGroupBySelect());
             Console.ReadLine();
         }
     }

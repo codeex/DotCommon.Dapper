@@ -110,9 +110,10 @@ namespace DotCommon.Dapper.Expressions.Translators
                 if (node.Arguments[0] is MemberExpression)
                 {
                     var memberExpr = node.Arguments[0] as MemberExpression;
-					if (TranslatorDelegate.IsMultipleType())
+                    SqlBuilder.Append($" ");
+                    if (TranslatorDelegate.IsMultipleType())
 					{
-                        SqlBuilder.Append($" `{TranslatorDelegate.GetTypeAlias(memberExpr.Member.DeclaringType)}`.");
+                        SqlBuilder.Append($"`{TranslatorDelegate.GetTypeAlias(memberExpr.Member.DeclaringType)}`.");
                     }
                     SqlBuilder.Append($"`{TranslatorDelegate.GetPropMap(memberExpr.Member.ToProp())}`");
                     var paramName = GetParameterName();
@@ -145,9 +146,10 @@ namespace DotCommon.Dapper.Expressions.Translators
 
         protected override Expression VisitMember(MemberExpression node)
         {
-			if (TranslatorDelegate.IsMultipleType())
+            SqlBuilder.Append($" ");
+            if (TranslatorDelegate.IsMultipleType())
 			{
-                SqlBuilder.Append($" `{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}`.");
+                SqlBuilder.Append($"`{TranslatorDelegate.GetTypeAlias(node.Member.DeclaringType)}`.");
             }
             SqlBuilder.Append($"`{TranslatorDelegate.GetPropMap(node.Member.ToProp())}`");
             return base.VisitMember(node);
