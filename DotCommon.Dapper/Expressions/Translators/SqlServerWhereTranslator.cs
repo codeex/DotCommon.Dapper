@@ -9,7 +9,9 @@ namespace DotCommon.Dapper.Expressions.Translators
     {
         private readonly DynamicParameters _parameters;
         private int _paramIndex = 0;
-        public SqlServerWhereTranslator(TranslatorDelegate translatorDelegate) : base(translatorDelegate)
+
+        public SqlServerWhereTranslator(TranslatorDelegate translatorDelegate, ISectionParameter parameter)
+            : base(translatorDelegate, parameter)
         {
             _parameters = new DynamicParameters();
         }
@@ -34,7 +36,7 @@ namespace DotCommon.Dapper.Expressions.Translators
         private string GetParameterName()
         {
             _paramIndex++;
-            return $"@param_{_paramIndex}";
+            return $"@param_w_{_paramIndex}";
         }
 
         protected override Expression VisitBinary(BinaryExpression node)

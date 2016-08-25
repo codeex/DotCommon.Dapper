@@ -12,12 +12,6 @@ namespace DotCommon.Dapper.Expressions
             {"mysqlconnection", SqlType.MySql}
         };
 
-        private static readonly Dictionary<string, IExpressionEvaluator> EvaliatorDict = new Dictionary
-            <string, IExpressionEvaluator>()
-        {
-            {"sqlconnection", new SqlServerExpressionEvaluator()},
-            {"mysqlconnection", new MySqlExpressionEvaluator()}
-        };
 
         private static string GetName(IDbConnection connection)
         {
@@ -30,11 +24,6 @@ namespace DotCommon.Dapper.Expressions
             return SqlTypeDict.ContainsKey(name) ? SqlTypeDict[name] : SqlType.SqlServer;
         }
 
-        public static IExpressionEvaluator GetEvaluator(IDbConnection connection)
-        {
-            string name = GetName(connection);
-            return EvaliatorDict.ContainsKey(name) ? EvaliatorDict[name] : new SqlServerExpressionEvaluator();
-        }
 
     }
 }

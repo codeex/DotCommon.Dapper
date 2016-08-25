@@ -50,12 +50,10 @@
     <Compile Include="Common\ExpressionUtils.cs" />
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="ConciseSqlBuilder.cs" />
-    <Compile Include="Expressions\BaseExpressionEvaluator.cs" />
     <Compile Include="Expressions\Builder\BaseQueryBuilder.cs" />
     <Compile Include="Expressions\Builder\MySqlQueryBuilder.cs" />
-    <Compile Include="Expressions\IExpressionEvaluator.cs" />
     <Compile Include="Expressions\Builder\IQueryBuilder.cs" />
-    <Compile Include="Expressions\MySqlExpressionEvaluator.cs" />
+    <Compile Include="Expressions\ExpressionEvaluator.cs" />
     <Compile Include="Expressions\SchemaContext.cs" />
     <Compile Include="Expressions\Sections\ISectionParameter.cs" />
     <Compile Include="Expressions\Sections\JoinSectionParameter.cs" />
@@ -69,7 +67,6 @@
     <Compile Include="Expressions\Sections\SectionItem.cs" />
     <Compile Include="Expressions\Sections\SectionType.cs" />
     <Compile Include="Expressions\Sections\TopSectionParameter.cs" />
-    <Compile Include="Expressions\SqlServerExpressionEvaluator.cs" />
     <Compile Include="Expressions\SqlType.cs" />
     <Compile Include="Expressions\SqlConnectionUtils.cs" />
     <Compile Include="Expressions\Translators\ITranslator.cs" />

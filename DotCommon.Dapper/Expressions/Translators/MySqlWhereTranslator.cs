@@ -33,7 +33,7 @@ namespace DotCommon.Dapper.Expressions.Translators
         private string GetParameterName()
         {
             _paramIndex++;
-            return $"@param_{_paramIndex}";
+            return $"@param_w_{_paramIndex}";
         }
 
         protected override Expression VisitBinary(BinaryExpression node)

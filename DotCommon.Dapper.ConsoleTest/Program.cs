@@ -85,7 +85,7 @@ namespace DotCommon.Dapper.ConsoleTest
             //var r = translator.Translate(expr);
 
             Expression<Func<Order, Product, User, bool>> expr =
-                (x, y, z) => x.OrderId > 3 && y.ProductId.SqlCount()>2;
+                (x, y, z) => x.OrderId > 3 && y.ProductId.SqlCount()==2;
 
             var td = new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias, (x) => true, () => true, () => { },
                 (x) => true, (x) => { });
@@ -95,7 +95,7 @@ namespace DotCommon.Dapper.ConsoleTest
             //var translator =
             //    new SqlServerJoinTranslator(new TranslatorDelegate(GetTableName, GetMapName, GetTypeAlias,(x)=> true),
             //        new JoinSectionParameter(JoinType.InnerJoin));
-            var translator = new SqlServerHavingTranslator(td);
+            var translator = new MySqlHavingTranslator(td);
             var r = translator.Translate(expr);
             Console.WriteLine(r);
             //Console.WriteLine("**************");

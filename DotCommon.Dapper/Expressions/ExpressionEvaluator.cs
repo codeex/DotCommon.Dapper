@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotCommon.Dapper.Expressions
 {
-    public interface IExpressionEvaluator
+    public class ExpressionEvaluator
     {
     }
 }

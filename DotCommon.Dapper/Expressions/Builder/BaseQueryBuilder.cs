@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using DotCommon.Dapper.Common;
 using DotCommon.Dapper.Expressions.Sections;
+using DotCommon.Dapper.Expressions.Translators;
 using DotCommon.Dapper.FluentMap;
 
 namespace DotCommon.Dapper.Expressions.Builder
@@ -9,10 +12,29 @@ namespace DotCommon.Dapper.Expressions.Builder
     public abstract class BaseQueryBuilder : IQueryBuilder
     {
         public SqlType SqlType { get; protected set; }
-
         public QueryWapper QueryWapper { get; protected set; }
+        protected StringBuilder SqlBuilder { get; set; }
+
+        protected TranslatorDelegate TranslatorDelegate;
+
+        protected bool IsMultipleType { get; set; } = false;
+
+        private readonly Dictionary<SectionType, bool> _sectionVisitDict = new Dictionary<SectionType, bool>
+        {
+            {SectionType.Select, true},
+            {SectionType.Where, true},
+            {SectionType.GroupBy, true},
+            {SectionType.Having, true},
+            {SectionType.Join, true},
+            {SectionType.OrderBy, true},
+            {SectionType.Page, true},
+            {SectionType.Top, true},
+            {SectionType.Union, true}
+        };
+
 
         protected Dictionary<Type, string> TypeAliasDict = new Dictionary<Type, string>();
+
 
         protected BaseQueryBuilder(SqlType sqlType, QueryWapper queryWapper)
         {
@@ -24,6 +46,7 @@ namespace DotCommon.Dapper.Expressions.Builder
         {
             return QueryWapper.FindSection(sectionType);
         }
+
 
         /// <summary>获取属性映射的数据库字段的名称
         /// </summary>
@@ -42,16 +65,16 @@ namespace DotCommon.Dapper.Expressions.Builder
             return entityMap == null ? type.Name : entityMap.TableName;
         }
 
-	    /// <summary>获取类型对应表名-->表别名
-	    /// </summary>
-	    protected string GetTypeAlias(Type type)
-	    {
-		    var alias = "";
-		    TypeAliasDict.TryGetValue(type, out alias);
-		    return alias;
-	    }
+        /// <summary>获取类型对应表名-->表别名
+        /// </summary>
+        protected string GetTypeAlias(Type type)
+        {
+            var alias = "";
+            TypeAliasDict.TryGetValue(type, out alias);
+            return alias;
+        }
 
-	    /// <summary>设置类型对应表名-->表别名 映射
+        /// <summary>设置类型对应表名-->表别名 映射
         /// </summary>
         protected void SetAliasDict(Dictionary<Type, string> aliasDict)
         {
@@ -61,5 +84,41 @@ namespace DotCommon.Dapper.Expressions.Builder
             }
         }
 
+        /// <summary>判断是否由多个部分组成
+        /// </summary>
+        protected bool SectionIsMultiple(SectionType sectionType)
+        {
+            return true;
+        }
+
+        protected bool GetIsMultipleType()
+        {
+            return IsMultipleType;
+        }
+
+        protected void SetMultipleType()
+        {
+            IsMultipleType = true;
+        }
+
+        protected bool IsFirstVisit(SectionType sectionType)
+        {
+            return _sectionVisitDict[sectionType];
+        }
+
+        protected void SetVisited(SectionType sectionType)
+        {
+            _sectionVisitDict[sectionType] = true;
+        }
+
+
+        protected SqlServerQueryTranslator CreateTranslator(SectionType sectionType, ISectionParameter parameter)
+        {
+            return default(SqlServerQueryTranslator);
+        }
+
+
     }
+
+
 }
