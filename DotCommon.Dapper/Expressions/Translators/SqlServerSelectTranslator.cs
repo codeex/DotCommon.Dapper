@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using DotCommon.Dapper.Extensions;
 
 namespace DotCommon.Dapper.Expressions.Translators
 {

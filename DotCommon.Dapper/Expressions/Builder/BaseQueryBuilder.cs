@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DotCommon.Dapper.Common;
 using DotCommon.Dapper.Expressions.Sections;
 using DotCommon.Dapper.Expressions.Translators;
 using DotCommon.Dapper.FluentMap;
