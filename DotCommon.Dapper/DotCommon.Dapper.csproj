@@ -51,7 +51,6 @@
     <Compile Include="Common\ReflectionHelper.cs" />
     <Compile Include="ConciseSqlBuilder.cs" />
     <Compile Include="Expressions\Builder\BaseQueryBuilder.cs" />
-    <Compile Include="Expressions\Builder\MySqlQueryBuilder.cs" />
     <Compile Include="Expressions\Builder\IQueryBuilder.cs" />
     <Compile Include="Expressions\ExpressionEvaluator.cs" />
     <Compile Include="Expressions\SchemaContext.cs" />
